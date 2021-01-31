@@ -1,6 +1,9 @@
+"""
+Script for being ran on the machine that is the Digital Picture Frame. The idea is to ssh and run this script to change the brightness from the Pi
+as it uses the light sensor to determine the value.
+"""
 import pexpect
 import argparse
-import re
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='used to increase/decrease screen brightness via backlight')
