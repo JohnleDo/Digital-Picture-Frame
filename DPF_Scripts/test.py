@@ -10,7 +10,7 @@ if __name__ == '__main__':
     command.expect("password")
     command.sendline("111696")
 
-    command = pexpect.spawn("sudo ddcutil getvcp 10 {}")
+    command = pexpect.spawn("sudo ddcutil getvcp 10")
     command.expect("password")
     command.sendline("111696")
     print(command.read())
