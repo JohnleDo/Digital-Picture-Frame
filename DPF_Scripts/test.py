@@ -9,5 +9,9 @@ if __name__ == '__main__':
     command = pexpect.spawn("sudo ddcutil setvcp 10 {}".format(args.brightness))
     command.expect("password")
     command.sendline("111696")
+
+    command = pexpect.spawn("sudo ddcutil getvcp 10 {}")
+    command.expect("password")
+    command.sendline("111696")
     print(command.read())
 
