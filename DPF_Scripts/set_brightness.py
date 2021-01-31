@@ -1,5 +1,6 @@
 import pexpect
 import argparse
+import re
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='used to increase/decrease screen brightness via backlight')
@@ -9,3 +10,9 @@ if __name__ == '__main__':
     command = pexpect.spawn("sudo ddcutil setvcp 10 {}".format(args.brightness))
     command.expect("password")
     command.sendline("111696")
+    command.read()
+
+    command = pexpect.spawn("sudo ddcutil getvcp 10")
+    command.expect("password")
+    command.sendline("111696")
+    print(command.read())
