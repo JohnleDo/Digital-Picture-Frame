@@ -31,7 +31,7 @@ def convert_value(value, top_range, low_range):
         return (value / top_range) * 100
 
 # Controls the LED with a fading effect instead of an instant change
-def control_led(converted_old_value, converted_new_value):
+def control_brightness(converted_old_value, converted_new_value):
     if converted_old_value < converted_new_value:
         for x in range(round(converted_old_value), round(converted_new_value)):
             print(x)
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             print("New Value: "+ str(converted_new_value))
             if ((converted_old_value - converted_new_value) >= 20) or ((converted_new_value - converted_old_value) >= 20) or converted_new_value == 0 or converted_new_value == 100:
                 print("One of the conditions met, changing now")
-                control_led(converted_old_value, converted_new_value)
+                control_brightness(converted_old_value, converted_new_value)
             time.sleep(1)
             old_value = new_value
     except KeyboardInterrupt:
