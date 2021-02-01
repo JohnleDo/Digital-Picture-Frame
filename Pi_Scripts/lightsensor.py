@@ -4,6 +4,8 @@ import RPi.GPIO as GPIO
 import time
 import re
 
+current_brightness = 0
+
 def rc_time (ldr):
     count = 0
   
@@ -22,30 +24,34 @@ def rc_time (ldr):
     return count
 
 
-# Converts the LDR value we got into a 0-100 range.
+# Converts the LDR value we got into a 0-100 range. The lower the value the less light the LDR detects while
+# the higher the value the amount of light detected.
+# 0 = Dark, 100 = Light 
 def convert_value(value, top_range, low_range):
     if value >= top_range:
-        return 100
+        return (100 - 100) * -1
     elif value <= low_range:
-        return 0
+        return (0 - 100) * -1
     else:
-        return (value / top_range) * 100
+        return (((value / top_range) * 100) - 100) * -1
 
 # Controls the LED with a fading effect instead of an instant change
 def control_brightness(converted_old_value, converted_new_value):
     if converted_old_value < converted_new_value:
-        for x in range(round(converted_new_value), round(converted_old_value), -10):
-            print(x)
-            create_ssh(host, username, password, x)
-        create_ssh(host, username, password, round(converted_new_value) - 100 * -1)
-
-    elif converted_old_value > converted_new_value:
-        for x in range(round(converted_new_value), round(converted_old_value), 10):
+        for x in range(round(converted_old_value), round(converted_new_value), 15):
             print(x)
             create_ssh(host, username, password, x)
         create_ssh(host, username, password, round(converted_new_value))
+        print(round(converted_new_value))
+
+    elif converted_old_value > converted_new_value:
+        for x in range(round(converted_old_value), round(converted_new_value), -15):
+            print(x)
+            create_ssh(host, username, password, x)
+        create_ssh(host, username, password, round(converted_new_value))
+        print(round(converted_new_value))
     else:
-        print("Else statement")
+        print("No Change")
 
 
 def create_ssh(host, username, password, value):
@@ -82,7 +88,7 @@ if __name__ == '__main__':
     # We use Pin 19 (GPIO 10) for LED due to setting the board to analog earlier
     try:
         old_value = rc_time(ldr)
-        set_value = round((convert_value(old_value, 50000, 1000) - 100) * -1)
+        set_value = round(convert_value(old_value, 50000, 1000))
         print("Setting brightness value: " + str(set_value))
         create_ssh(host, username, password, set_value)
         
