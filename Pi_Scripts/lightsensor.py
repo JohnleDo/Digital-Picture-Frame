@@ -2,6 +2,7 @@ import paramiko
 from contextlib import contextmanager
 import RPi.GPIO as GPIO
 import time
+import re
 
 def rc_time (ldr):
     count = 0
@@ -33,32 +34,39 @@ def convert_value(value, top_range, low_range):
 # Controls the LED with a fading effect instead of an instant change
 def control_brightness(converted_old_value, converted_new_value):
     if converted_old_value < converted_new_value:
-        for x in range(round(converted_old_value), round(converted_new_value)):
+        for x in range(round(converted_new_value), round(converted_old_value), -10):
             print(x)
-            time.sleep(.0075)
+            create_ssh(host, username, password, x)
+        create_ssh(host, username, password, round(converted_new_value) - 100 * -1)
+
     elif converted_old_value > converted_new_value:
-        for x in range(round(converted_old_value), round(converted_new_value), -1):
+        for x in range(round(converted_new_value), round(converted_old_value), 10):
             print(x)
-            time.sleep(.0075)
+            create_ssh(host, username, password, x)
+        create_ssh(host, username, password, round(converted_new_value))
     else:
         print("Else statement")
 
 
-def create_ssh(host, username, password):
+def create_ssh(host, username, password, value):
     ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy()) 
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    output = ""
     try:
-        print("creating connection")
+        #print("creating connection")
         ssh.connect(host, username=username, password=password)
-        print("connected")
+        #print("connected")
     finally:
-        stdin, stdout, stderr = ssh.exec_command("sudo ddcutil setvcp 10 0")
+        stdin, stdout, stderr = ssh.exec_command("python3 /home/dpf/Desktop/Digital-Picture-Frame/DPF_Scripts/set_brightness.py -b {}".format(value))
         for line in stdout:
-            print(line)
-        
-        print("closing connection")
+            output += line
+
+        result = re.search("current value = +[0-9]+", output).group(0)
+        result = result.replace("current value =", "").strip()
+        print("Current brightness value: " + result)
+        #print("closing connection")
         ssh.close()
-        print("closed")
+        #print("closed")
        
 if __name__ == '__main__':
     GPIO.setmode(GPIO.BOARD)
@@ -69,12 +77,15 @@ if __name__ == '__main__':
     host = "192.168.1.100"
     username = "dpf"
     password = "111696"
-    create_ssh(host, username, password)
 
     # Catch when script is interupted, cleanup correctly
     # We use Pin 19 (GPIO 10) for LED due to setting the board to analog earlier
     try:
         old_value = rc_time(ldr)
+        set_value = round((convert_value(old_value, 50000, 1000) - 100) * -1)
+        print("Setting brightness value: " + str(set_value))
+        create_ssh(host, username, password, set_value)
+        
         # Main loop
         while True:
             new_value = rc_time(ldr)
@@ -84,9 +95,9 @@ if __name__ == '__main__':
             print("Old Value: " + str(converted_old_value))
             print("New Value: "+ str(converted_new_value))
             if ((converted_old_value - converted_new_value) >= 20) or ((converted_new_value - converted_old_value) >= 20) or converted_new_value == 0 or converted_new_value == 100:
-                print("One of the conditions met, changing now")
+                #print("One of the conditions met, changing now")
                 control_brightness(converted_old_value, converted_new_value)
-            time.sleep(1)
+            time.sleep(5)
             old_value = new_value
     except KeyboardInterrupt:
         pass
