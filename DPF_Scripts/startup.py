@@ -37,4 +37,4 @@ if __name__ == '__main__':
     while ping(ip_address) is False:
         print("Could not reach Raspberry Pi, ")
     os.chdir(image_directory)
-    subprocess.call("bash /home/dpf/Desktop/Digital-Picture-Frame/DPF_Scripts/slideshow_command.sh)
+    os.system("bash /home/dpf/Desktop/Digital-Picture-Frame/DPF_Scripts/slideshow_command.sh")
