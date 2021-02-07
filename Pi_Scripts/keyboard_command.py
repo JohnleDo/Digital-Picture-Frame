@@ -57,9 +57,13 @@ if __name__ == '__main__':
     GPIO.setup(button1_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(button2_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(button3_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(button4_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(button5_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(button1_pin, GPIO.BOTH, callback=action1, bouncetime=1500)
     GPIO.add_event_detect(button2_pin, GPIO.BOTH, callback=action2, bouncetime=1500)
     GPIO.add_event_detect(button3_pin, GPIO.BOTH, callback=action3, bouncetime=1500)
+    GPIO.add_event_detect(button4_pin, GPIO.BOTH, callback=action4, bouncetime=1500)
+    GPIO.add_event_detect(button5_pin, GPIO.BOTH, callback=action5, bouncetime=1500)
 
     while True:
         time.sleep(1)
