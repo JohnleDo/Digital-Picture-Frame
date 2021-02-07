@@ -17,6 +17,8 @@ password = "raspberry"
 # The path to the directory holding all the images for the slideshow
 image_directory = "/home/dpf/Desktop/Slideshow Images"
 
+slideshow_command = '`feh -F -d --slideshow-delay 10 --action1 "python3 /home/dpf/Desktop/Digital-Picture-Frame/DPF_Scripts/feh_image_deletion.py -d echo @$PWD/@%n %n"`'.replace("@", "'")
+
 
 def ping(host):
     """
@@ -34,7 +36,10 @@ def ping(host):
     return subprocess.call(command) == 0
 
 if __name__ == '__main__':
+    print(slideshow_command)
+    """
     while ping(ip_address) is False:
         print("Could not reach Raspberry Pi, ")
     os.chdir(image_directory)
-    subprocess.call('`feh -F -d --slideshow-delay 10 --action1 "python3 /home/dpf/Desktop/Digital-Picture-Frame/DPF_Scripts/feh_image_deletion.py -d echo @$PWD/@%n %n"`'.replace("@", "'"))
+    subprocess.call(slideshow_command)
+    """
