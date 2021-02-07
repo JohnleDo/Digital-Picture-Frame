@@ -11,12 +11,12 @@ def action2():
     keyboard.press(Key.left)
     keyboard.release(Key.left)
 
-# Control the action-binded key "1" to delete the current image
-def action3():
-    keyboard.press('1')
-    keyboard.release('1')
-
 # Control the h key to pause/resume the FEH slideshow
+def action3():
+    keyboard.press('h')
+    keyboard.release('h')
+
+# Control the action-binded key "1" to delete the current image
 def action4():
     keyboard.press('1')
     keyboard.release('1')

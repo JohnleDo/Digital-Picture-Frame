@@ -88,14 +88,14 @@ if __name__ == '__main__':
 
     # This while loop is for checking the raw value of the ldr. Good to use to adjust the top_value
     # and low value in the convert_value function.
-    # while True:
-        # print(rc_time(ldr))
+    while True:
+      print(rc_time(ldr))
 
     # Catch when script is interupted, cleanup correctly
     # We use Pin 19 (GPIO 10) for LED due to setting the board to analog earlier
     try:
         old_value = rc_time(ldr)
-        set_value = round(convert_value(old_value, 30000, 1000))
+        set_value = round(convert_value(old_value, 5000, 300))
         print("Setting brightness value: " + str(set_value))
         create_ssh(host, username, password, set_value)
         current_brightness = int(set_value)
@@ -104,8 +104,8 @@ if __name__ == '__main__':
         while True:
             new_value = rc_time(ldr)
             
-            converted_old_value = convert_value(old_value, 30000, 1000)
-            converted_new_value = convert_value(new_value, 30000, 1000)
+            converted_old_value = convert_value(old_value, 5000, 300)
+            converted_new_value = convert_value(new_value, 5000, 300)
             print("Old Value: " + str(converted_old_value))
             print("New Value: "+ str(converted_new_value))
             if ((converted_old_value - converted_new_value) >= 20) or ((converted_new_value - converted_old_value) >= 20) or (converted_new_value == 0 and current_brightness != 0) or (converted_new_value == 100 and current_brightness != 100):
