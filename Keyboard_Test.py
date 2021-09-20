@@ -25,10 +25,10 @@ if __name__ == '__main__':
     print("Please Press a button")
     button1_pin = 2
     button2_pin = 3
-    button3_pin = 4
-    button4_pin = 17
-    button5_pin = 27
-    button6_pin = 22
+    button3_pin = 17
+    button4_pin = 27
+    button5_pin = 22
+    button6_pin = 5
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(button1_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
