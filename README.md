@@ -8,3 +8,8 @@ command: ps aux | grep keyboard_command.py
     sleep 5 && export DISPLAY=:0.0 && cd /media/pi/'Samsung USB'/'Slideshow Images' && `feh -F -Y -d -z --slideshow-delay 10 --action1 "python3 /home/pi/Desktop/Digital-Picture-Frame/feh_image_deletion.py -d echo '$PWD/'%n %n"` &
     python3 /home/pi/Desktop/Digital-Picture-Frame/keyboard_command.py &
 4. Shutdown command: sudo rtcwake -m mem -l -t $(date +%s -d 'tomorrow 09:00')
+
+# To Do
+- Backup the whole raspberry pi
+- Write better documentation
+- Use a config file for scripts so it can avoid using hardcoded filepaths/directories.
