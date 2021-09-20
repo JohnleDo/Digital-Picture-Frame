@@ -15,28 +15,46 @@ from pynput.keyboard import Key, Controller
     - args.d[2] = image file name
 """
 
-if __name__ == '__main__':
-    keyboard = Controller()
-
-    parser = argparse.ArgumentParser(description='used to capture Feh image filenames before deletion.')
-    parser.add_argument('-d', nargs='+', help='Name of file to be deleted. Takes a list to deal with bash command.')
-    args = parser.parse_args()
-    feh_dir = args.d[1].replace(args.d[2], "")
-    print("Feh Image Filename to be deleted: " + args.d[2])
-
-    if os.path.exists(feh_dir + "removed_images.json"):
-        with open(feh_dir + "removed_images.json", "a") as file:
-            json.dump({"filename": args.d[2],
-                      "date of deletion": datetime.today().strftime('%Y-%m-%d')}, file)
-            file.write(os.linesep)
+def WriteToLog(logFilePath, message):
+    if (os.path.exists(logFilePath)):
+        with open(logFilePath, "a") as file:
+            file.write(datetime.today().strftime("%d-%b-%Y (%H:%M:%S)") + ": " + message + "\n")
             file.close()
+    
     else:
-        with open(feh_dir + "removed_images.json", "w") as file:
-            json.dump({"filename": args.d[2],
-                      "date of deletion": datetime.today().strftime('%Y-%m-%d')}, file)
-            file.write(os.linesep)
+        with open(logFilePath, "w") as file:
+            file.write(datetime.today().strftime("%d-%b-%Y (%H:%M:%S)") + ": " + message + "\n")
             file.close()
 
-    os.remove(args.d[1])
+if __name__ == '__main__':
+    try:
+        logFilePath = os.getcwd() + "/Logs/Image_Deletion_Log.txt"
+        WriteToLog(logFilePath, "Began Program")
+
+        keyboard = Controller()
+
+        parser = argparse.ArgumentParser(description='used to capture Feh image filenames before deletion.')
+        parser.add_argument('-d', nargs='+', help='Name of file to be deleted. Takes a list to deal with bash command.')
+        args = parser.parse_args()
+        feh_dir = args.d[1].replace(args.d[2], "")
+        print("Feh Image Filename to be deleted: " + args.d[2])
+
+        if os.path.exists(feh_dir + "removed_images.json"):
+            with open(feh_dir + "removed_images.json", "a") as file:
+                json.dump({"filename": args.d[2],
+                        "date of deletion": datetime.today().strftime('%Y-%m-%d')}, file)
+                file.write(os.linesep)
+                file.close()
+        else:
+            with open(feh_dir + "removed_images.json", "w") as file:
+                json.dump({"filename": args.d[2],
+                        "date of deletion": datetime.today().strftime('%Y-%m-%d')}, file)
+                file.write(os.linesep)
+                file.close()
+
+        os.remove(args.d[1])
+
+    except Exception as e:
+        WriteToLog(logFilePath,"[ERROR]: " + e.args[0])
 
 

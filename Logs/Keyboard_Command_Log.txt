@@ -1,0 +1,6 @@
+19-Sep-2021 (19:27:02): Began Program
+19-Sep-2021 (19:27:02): division by zero
+19-Sep-2021 (19:27:31): Began Program
+19-Sep-2021 (19:27:31): ERROR -division by zero
+19-Sep-2021 (19:27:56): Began Program
+19-Sep-2021 (19:27:56): [ERROR]: division by zero
