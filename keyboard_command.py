@@ -57,7 +57,7 @@ def action6(self):
 
 
 if __name__ == '__main__':
-    logFilePath = "home/pi/Desktop/Digital-Picture-Frame/Logs/Keyboard_Command_Log.txt"
+    logFilePath = "/home/pi/Desktop/Digital-Picture-Frame/Logs/Keyboard_Command_Log.txt"
     WriteToLog(logFilePath, "Program Started")
     keyboard = Controller()
     button1_pin = 2

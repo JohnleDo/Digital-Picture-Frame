@@ -13,3 +13,4 @@ command: ps aux | grep keyboard_command.py
 - Backup the whole raspberry pi
 - Write better documentation
 - Use a config file for scripts so it can avoid using hardcoded filepaths/directories.
+- Move Log Files into the folder where the images are. 

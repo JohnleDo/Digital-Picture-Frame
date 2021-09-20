@@ -28,7 +28,7 @@ def WriteToLog(logFilePath, message):
 
 if __name__ == '__main__':
     try:
-        logFilePath = "home/pi/Desktop/Digital-Picture-Frame/Logs/Image_Deletion_Log.txt"
+        logFilePath = "/home/pi/Desktop/Digital-Picture-Frame/Logs/Image_Deletion_Log.txt"
         WriteToLog(logFilePath, "Began Program")
 
         keyboard = Controller()
